@@ -1,7 +1,6 @@
 using Auth.API;
 using Auth.API.Extensions;
 using Auth.API.Helpers;
-using Auth.API.Routes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +25,6 @@ app.UseRouting();
 app.MapGet("/", () => Results.Ok(new { Now = DateTime.UtcNow }));
 app.MapGet("/api/ping", () => Results.Ok(new { Now = DateTime.UtcNow }));
 
-app.MapUsersApi();
+app.MapFeatureEndpoints();
 
 app.Run();
