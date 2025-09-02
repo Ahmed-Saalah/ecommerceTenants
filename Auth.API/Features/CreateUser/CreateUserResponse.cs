@@ -1,6 +1,6 @@
 ﻿using Auth.API.Helpers;
 
-namespace Auth.API.Mediator.CreateUser;
+namespace Auth.API.Features.CreateUser;
 
 public class CreateUserResponse : Result<CreateUserResponseDto>
 {

@@ -1,9 +1,10 @@
-﻿using Auth.API.Models;
+﻿using Auth.API.Features.CreateUser;
+using Auth.API.Models;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using PhoneNumbers;
 
-namespace Auth.API.Mediator.CreateUser;
+namespace Auth.API.Features.CreateUser;
 
 public sealed class CreateUserValidator : AbstractValidator<CreateUserRequest>
 {

@@ -6,7 +6,7 @@ using Auth.API.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Auth.API.Mediator.Login;
+namespace Auth.API.Features.Login;
 
 public sealed class LoginHandler(AuthDbContext dbContext, ITokenGenerator tokenGenerator)
     : IRequestHandler<LoginRequest, Result<Response>>

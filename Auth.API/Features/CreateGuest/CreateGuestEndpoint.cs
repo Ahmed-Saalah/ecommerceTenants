@@ -4,7 +4,7 @@ using Auth.API.Models.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Auth.API.Mediator.CreateGuest;
+namespace Auth.API.Features.CreateGuest;
 
 public sealed class CreateGuestEndpoint : IEndpoint
 {

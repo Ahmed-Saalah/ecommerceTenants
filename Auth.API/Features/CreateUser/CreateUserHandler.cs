@@ -6,7 +6,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace Auth.API.Mediator.CreateUser;
+namespace Auth.API.Features.CreateUser;
 
 public sealed class CreateUserHandler(
     IEntityWriter<UserTenant> userTenantWriter,

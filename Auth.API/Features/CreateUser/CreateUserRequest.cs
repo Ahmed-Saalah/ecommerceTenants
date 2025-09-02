@@ -1,7 +1,7 @@
 ﻿using Auth.API.Models;
 using MediatR;
 
-namespace Auth.API.Mediator.CreateUser
+namespace Auth.API.Features.CreateUser
 {
     public sealed record CreateUserRequest(
         string Username,

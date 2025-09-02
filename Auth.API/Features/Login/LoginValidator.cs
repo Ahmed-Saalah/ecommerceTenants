@@ -2,7 +2,7 @@
 using FluentValidation;
 using PhoneNumbers;
 
-namespace Auth.API.Mediator.Login;
+namespace Auth.API.Features.Login;
 
 public sealed class LoginValidator : AbstractValidator<LoginRequest>
 {

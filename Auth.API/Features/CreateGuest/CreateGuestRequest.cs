@@ -1,7 +1,8 @@
-﻿using Auth.API.Models;
+﻿using Auth.API.Mediator.CreateGuest;
+using Auth.API.Models;
 using MediatR;
 
-namespace Auth.API.Mediator.CreateGuest;
+namespace Auth.API.Features.CreateGuest;
 
 public sealed record CreateGuestRequest(
     string Username,

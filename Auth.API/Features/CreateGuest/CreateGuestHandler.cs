@@ -1,10 +1,11 @@
 ﻿using Auth.API.Helpers;
+using Auth.API.Mediator.CreateGuest;
 using Auth.API.Models;
 using Auth.API.Services;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace Auth.API.Mediator.CreateGuest;
+namespace Auth.API.Features.CreateGuest;
 
 public sealed class CreateGuestHandler(
     UserManager<User> userManager,
