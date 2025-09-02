@@ -15,5 +15,3 @@ A modular, scalable, and multitenant e-commerce platform built using modern back
 - 🧩 **Vertical Slice Architecture** — 
 - ⚡ **Minimal API** 
 - 👥 **User Context Middleware**
-
----
