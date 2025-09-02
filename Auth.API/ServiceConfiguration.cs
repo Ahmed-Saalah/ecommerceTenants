@@ -48,8 +48,6 @@ public static class ServiceConfiguration
 
         svcs.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
-        svcs.AddScoped<Core.Context.IContext, Core.Context.Context>();
-
         return svcs;
     }
 }

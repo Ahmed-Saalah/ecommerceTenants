@@ -1,11 +1,10 @@
-﻿using Auth.API.DbContexts;
-using Auth.API.Helpers;
-using Auth.API.Mediator;
+﻿using Auth.API.Helpers;
+using Auth.API.Mediator.CreateGuest;
+using Auth.API.Mediator.CreateUser;
+using Auth.API.Mediator.Login;
 using Auth.API.Models.Constants;
-using Auth.API.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Auth.API.Routes;
 
@@ -17,7 +16,7 @@ public static class UserApiRoutes
 
         usersRouter.MapPost(
             "",
-            async ([FromBody] CreateUser.Request data, IMediator mediator) =>
+            async ([FromBody] CreateUserRequest data, [FromServices] IMediator mediator) =>
             {
                 var response = await mediator.Send(data);
                 return response.ToHttpResult();
@@ -25,11 +24,11 @@ public static class UserApiRoutes
         );
 
         usersRouter.MapPost(
-            "customers/guest",
+            "/customers/guest",
             async (IMediator mediator, [FromQuery] int[]? tenantIds) =>
             {
                 var response = await mediator.Send(
-                    new CreateGuest.Request(
+                    new CreateGuestRequest(
                         Username: GuestData.Username,
                         Email: GuestData.Email,
                         PhoneNumber: GuestData.PhoneNumber,
@@ -46,34 +45,43 @@ public static class UserApiRoutes
             }
         );
 
-        app.MapPost(
-            "/api/token/refresh",
-            async ([FromBody] string refreshToken, AuthDbContext db, ITokenGenerator generator) =>
+        usersRouter.MapPost(
+            "/login",
+            async ([FromBody] LoginRequest data, [FromServices] IMediator mediator) =>
             {
-                var token = await db
-                    .RefreshTokens.Include(t => t.User)
-                    .FirstOrDefaultAsync(t =>
-                        t.Token == refreshToken && !t.IsRevoked && t.ExpiresAt > DateTime.UtcNow
-                    );
-
-                if (token == null)
-                    return Results.Unauthorized();
-
-                var (accessToken, newRefreshToken, expires) = generator.Generate(token.User);
-
-                token.IsRevoked = true;
-                await db.SaveChangesAsync();
-
-                return Results.Ok(
-                    new
-                    {
-                        accessToken,
-                        refreshToken = newRefreshToken,
-                        expires,
-                    }
-                );
+                var response = await mediator.Send(data);
+                return response.ToHttpResult();
             }
         );
+
+        //app.MapPost(
+        //    "/api/token/refresh",
+        //    async ([FromBody] string refreshToken, AuthDbContext db, ITokenGenerator generator) =>
+        //    {
+        //        var token = await db
+        //            .RefreshTokens.Include(t => t.User)
+        //            .FirstOrDefaultAsync(t =>
+        //                t.Token == refreshToken && !t.IsRevoked && t.ExpiresAt > DateTime.UtcNow
+        //            );
+
+        //        if (token == null)
+        //            return Results.Unauthorized();
+
+        //        var (accessToken, newRefreshToken, expires) = generator.Generate(token.User);
+
+        //        token.IsRevoked = true;
+        //        await db.SaveChangesAsync();
+
+        //        return Results.Ok(
+        //            new
+        //            {
+        //                accessToken,
+        //                refreshToken = newRefreshToken,
+        //                expires,
+        //            }
+        //        );
+        //    }
+        //);
 
         return app;
     }
