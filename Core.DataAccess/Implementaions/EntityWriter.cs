@@ -51,4 +51,21 @@ public class EntityWriter<T, TDbContext>(TDbContext dbContext) : IEntityWriter<T
         await _dbContext.SaveChangesAsync();
         return entity;
     }
+
+    public async Task<T> UpsertAsync(T entity, params object[] keyValues)
+    {
+        var existing = await _set.FindAsync(keyValues);
+
+        if (existing is null)
+        {
+            _set.Add(entity);
+        }
+        else
+        {
+            _dbContext.Entry(existing).CurrentValues.SetValues(entity);
+        }
+
+        await _dbContext.SaveChangesAsync();
+        return entity;
+    }
 }

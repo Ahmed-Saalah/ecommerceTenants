@@ -7,4 +7,5 @@ public interface IEntityWriter<T>
     Task<T> UpdateAsync(T entity);
     Task DeleteAsync(int id);
     Task<T> UpsertAsync(T entity, Func<T, object> keySelector);
+    Task<T> UpsertAsync(T entity, params object[] keyValues);
 }
