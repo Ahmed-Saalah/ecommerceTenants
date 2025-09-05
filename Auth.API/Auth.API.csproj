@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Core.Context\Core.Context.csproj" />
     <ProjectReference Include="..\Core.DataAccess\Core.DataAccess.csproj" />
+    <ProjectReference Include="..\Core.Messaging\Core.Messaging.csproj" />
   </ItemGroup>
 
 </Project>

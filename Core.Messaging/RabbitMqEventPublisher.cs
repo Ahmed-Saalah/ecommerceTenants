@@ -21,14 +21,6 @@ public sealed class RabbitMqEventPublisher : IEventPublisher, IDisposable
         var connection = await factory.CreateConnectionAsync();
         var channel = await connection.CreateChannelAsync();
 
-        await channel.QueueDeclareAsync(
-            queue: "Auth.queue",
-            durable: true,
-            exclusive: false,
-            autoDelete: false,
-            arguments: null
-        );
-
         return new RabbitMqEventPublisher(connection, channel);
     }
 
@@ -38,11 +30,20 @@ public sealed class RabbitMqEventPublisher : IEventPublisher, IDisposable
         CancellationToken cancellationToken = default
     )
     {
+        var queueName = topic ?? typeof(T).Name;
         var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(@event));
+
+        await _channel.QueueDeclareAsync(
+            queue: queueName,
+            durable: true,
+            exclusive: false,
+            autoDelete: false,
+            arguments: null
+        );
 
         await _channel.BasicPublishAsync(
             exchange: string.Empty,
-            routingKey: "Auth.queue",
+            routingKey: queueName,
             mandatory: true,
             basicProperties: new BasicProperties { Persistent = true },
             body: body

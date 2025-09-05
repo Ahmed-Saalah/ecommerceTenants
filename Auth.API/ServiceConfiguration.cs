@@ -2,6 +2,7 @@
 using Auth.API.Extensions;
 using Auth.API.Models;
 using Auth.API.Services;
+using Core.Messaging;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ namespace Auth.API;
 
 public static class ServiceConfiguration
 {
-    public static IServiceCollection ConfigureApplicationService(
+    public static async Task<IServiceCollection> ConfigureApplicationServiceAsync(
         this IServiceCollection svcs,
         IConfiguration config
     )
@@ -47,6 +48,10 @@ public static class ServiceConfiguration
             .AddDefaultTokenProviders();
 
         svcs.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
+        var rabbitHost = config.GetValue<string>("RabbitMQ:HostName") ?? "localhost";
+        var publisher = await RabbitMqEventPublisher.CreateAsync(rabbitHost);
+        svcs.AddSingleton<IEventPublisher>(publisher);
 
         return svcs;
     }

@@ -1,7 +1,9 @@
 ﻿using Auth.API.Helpers;
+using Auth.API.Messages;
 using Auth.API.Models;
 using Auth.API.Services;
 using Core.DataAccess.Abstractions;
+using Core.Messaging;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -13,7 +15,8 @@ public sealed class CreateUserHandler(
     IValidator<CreateUserRequest> validator,
     UserManager<User> userManager,
     RoleManager<Role> roleManager,
-    ITokenGenerator tokenGenerator
+    ITokenGenerator tokenGenerator,
+    IEventPublisher eventPublisher
 ) : IRequestHandler<CreateUserRequest, CreateUserResponse>
 {
     public async Task<CreateUserResponse> Handle(
@@ -68,6 +71,20 @@ public sealed class CreateUserHandler(
         var (accessToken, refreshToken, expiresAt) = tokenGenerator.Generate(
             user,
             request.TenantIds ?? Array.Empty<int>()
+        );
+
+        await eventPublisher.PublishAsync(
+            new UserCreatedEvent(
+                user.Id,
+                request?.TenantIds[0] ?? 1,
+                user.UserName,
+                user.Email,
+                user.PhoneNumber,
+                user.DisplayName,
+                request.Claims.Where(c => c.Type == "role").FirstOrDefault().Value
+            ),
+            "Auth.UserCreated",
+            cancellationToken
         );
 
         return new CreateUserResponseDto(user.Id, accessToken, refreshToken, expiresAt);

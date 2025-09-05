@@ -14,7 +14,7 @@ builder
     .Services.AddEndpointsApiExplorer()
     .AddSwaggerServices()
     .AddSwaggerGen(o => o.OperationFilter<SwaggerDefaultOperationFilter>())
-    .ConfigureApplicationService(builder.Configuration);
+    .ConfigureApplicationServiceAsync(builder.Configuration);
 
 var app = builder.Build();
 
