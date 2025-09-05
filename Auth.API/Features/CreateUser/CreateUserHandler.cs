@@ -83,7 +83,7 @@ public sealed class CreateUserHandler(
                 user.DisplayName,
                 request.Claims.Where(c => c.Type == "role").FirstOrDefault().Value
             ),
-            "Auth.UserCreated",
+            "Auth.UserCreatedEvent",
             cancellationToken
         );
 

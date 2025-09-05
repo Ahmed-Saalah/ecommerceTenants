@@ -11,7 +11,7 @@ public static class UserCreatedEventHandler
 {
     [FunctionName("UserCreatedEventHandler")]
     public static async Task Run(
-        [RabbitMQTrigger("Auth.UserCreated", ConnectionStringSetting = "RabbitMqConnection")]
+        [RabbitMQTrigger("Auth.UserCreatedEvent", ConnectionStringSetting = "localhost")]
             byte[] message,
         ICustomersClient customersApi,
         ILogger logger

@@ -10,7 +10,7 @@ builder.Configuration.AddConfiguration(
 
 IConfiguration config = builder.Configuration;
 
-builder
+await builder
     .Services.AddEndpointsApiExplorer()
     .AddSwaggerServices()
     .AddSwaggerGen(o => o.OperationFilter<SwaggerDefaultOperationFilter>())

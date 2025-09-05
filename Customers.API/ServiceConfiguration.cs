@@ -35,8 +35,6 @@ public static class ServiceConfiguration
 
         svcs.AddDataAccess<CustomersDbContext>();
 
-        svcs.AddHttpContextAccessor();
-
         svcs.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
         return svcs;

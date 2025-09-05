@@ -8,8 +8,7 @@ namespace Customers.API.Features.CreateCustomer;
 
 public sealed class CreateCustomerHandler(
     IEntityWriter<Customer> customerWriter,
-    IEntityWriter<CustomerTenant> customerTenantWriter,
-    IValidator<CreateCustomerRequest> validator
+    IEntityWriter<CustomerTenant> customerTenantWriter
 ) : IRequestHandler<CreateCustomerRequest, CreateCustomerResponse>
 {
     public async Task<CreateCustomerResponse> Handle(
@@ -17,13 +16,6 @@ public sealed class CreateCustomerHandler(
         CancellationToken cancellationToken
     )
     {
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-        if (!validationResult.IsValid)
-        {
-            return new ValidationError(validationResult.Errors);
-        }
-
         var customer = new Customer
         {
             CustomerId = request.CustomerId,

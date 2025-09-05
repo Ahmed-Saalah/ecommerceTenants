@@ -1,15 +1,29 @@
-using Customers.EventHandlers.Handlers;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Builder;
+using Customers.EventHandlers.Clients.Customers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-var builder = FunctionsApplication.CreateBuilder(args);
+await new HostBuilder()
+    .ConfigureAppConfiguration(_ =>
+        _.AddEnvironmentVariables().AddJsonFile("local.settings.json", true, true)
+    )
+    .ConfigureServices((context, svcs) => Configure(svcs, context.Configuration))
+    .Build()
+    .RunAsync();
 
-builder.ConfigureFunctionsWebApplication();
+static void Configure(IServiceCollection svcs, IConfiguration config)
+{
+    var sbConnectionString =
+        config.GetValue<string>("SBConnection")
+        ?? throw new System.Exception("SBConnection not found");
 
-builder
-    .Services.AddApplicationInsightsTelemetryWorkerService()
-    .ConfigureFunctionsApplicationInsights();
+    svcs.AddMediatR(_ => _.RegisterServicesFromAssemblyContaining<Program>());
 
-builder.Build().Run();
+    svcs.AddHttpClient<ICustomersClient, CustomersClient>(_ =>
+    {
+        _.BaseAddress = new Uri(
+            config.GetValue<string>("CustomersApiUrl")
+                ?? throw new Exception("Customers Api Url not exist in config")
+        );
+    });
+}
