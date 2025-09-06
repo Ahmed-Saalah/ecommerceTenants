@@ -3,27 +3,32 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-await new HostBuilder()
-    .ConfigureAppConfiguration(_ =>
-        _.AddEnvironmentVariables().AddJsonFile("local.settings.json", true, true)
-    )
-    .ConfigureServices((context, svcs) => Configure(svcs, context.Configuration))
-    .Build()
-    .RunAsync();
-
-static void Configure(IServiceCollection svcs, IConfiguration config)
-{
-    var sbConnectionString =
-        config.GetValue<string>("SBConnection")
-        ?? throw new System.Exception("SBConnection not found");
-
-    svcs.AddMediatR(_ => _.RegisterServicesFromAssemblyContaining<Program>());
-
-    svcs.AddHttpClient<ICustomersClient, CustomersClient>(_ =>
+var host = new HostBuilder()
+    .ConfigureFunctionsWebApplication()
+    .ConfigureAppConfiguration(config =>
     {
-        _.BaseAddress = new Uri(
+        config.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true);
+        config.AddEnvironmentVariables();
+    })
+    .ConfigureServices(
+        (context, services) =>
+        {
+            Configure(services, context.Configuration);
+        }
+    )
+    .Build();
+
+await host.RunAsync();
+
+static void Configure(IServiceCollection services, IConfiguration config)
+{
+    services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
+
+    services.AddHttpClient<ICustomersClient, CustomersClient>(client =>
+    {
+        client.BaseAddress = new Uri(
             config.GetValue<string>("CustomersApiUrl")
-                ?? throw new Exception("Customers Api Url not exist in config")
+                ?? throw new Exception("CustomersApiUrl not found in config")
         );
     });
 }

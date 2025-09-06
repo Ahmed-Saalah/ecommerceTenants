@@ -23,7 +23,7 @@ public static class UserCreatedEventHandler
         if (user != null)
         {
             logger.LogInformation("Received UserCreatedEvent: {Email}", user.Email);
-            if (user.Role == "customer")
+            if (user.Role == "Customer")
             {
                 await customersApi.ActAsync(
                     new CreateCustomer.Endpoint(
