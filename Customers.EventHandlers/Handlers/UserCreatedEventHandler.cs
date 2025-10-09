@@ -1,43 +1,48 @@
-﻿using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Customers.EventHandlers.Clients.Customers;
 using Customers.EventHandlers.Clients.Customers.Endpoints;
-using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 
 namespace Customers.EventHandlers.Handlers;
 
-public static class UserCreatedEventHandler
+public class UserCreatedEventHandler : IEventHandler
 {
-    [FunctionName("UserCreatedEventHandler")]
-    public static async Task Run(
-        [RabbitMQTrigger("Auth.UserCreatedEvent", ConnectionStringSetting = "localhost")]
-            byte[] message,
-        ICustomersClient customersApi,
-        ILogger logger
+    private readonly ICustomersClient _customersClient;
+    private readonly ILogger<UserCreatedEventHandler> _logger;
+
+    public UserCreatedEventHandler(
+        ICustomersClient customersClient,
+        ILogger<UserCreatedEventHandler> logger
     )
     {
-        var json = Encoding.UTF8.GetString(message);
-        var user = JsonSerializer.Deserialize<UserCreatedEvent>(json);
+        _customersClient = customersClient;
+        _logger = logger;
+    }
 
-        if (user != null)
+    public bool CanHandle(string eventType) => eventType == nameof(UserCreatedEvent);
+
+    public async Task HandleAsync(string json)
+    {
+        var user = JsonSerializer.Deserialize<UserCreatedEvent>(json);
+        if (user is null)
+            return;
+
+        _logger.LogInformation("Handling UserCreatedEvent for {Email}", user.Email);
+
+        if (user.Role == "Customer")
         {
-            logger.LogInformation("Received UserCreatedEvent: {Email}", user.Email);
-            if (user.Role == "Customer")
-            {
-                await customersApi.ActAsync(
-                    new CreateCustomer.Endpoint(
-                        new CreateCustomer.Request(
-                            user.CustomerId,
-                            user.TenantId,
-                            user.Username,
-                            user.Email,
-                            user.PhoneNumber,
-                            user.DisplayName
-                        )
+            await _customersClient.ActAsync(
+                new CreateCustomer.Endpoint(
+                    new CreateCustomer.Request(
+                        user.CustomerId,
+                        user.TenantId,
+                        user.Username,
+                        user.Email,
+                        user.PhoneNumber,
+                        user.DisplayName
                     )
-                );
-            }
+                )
+            );
         }
     }
 

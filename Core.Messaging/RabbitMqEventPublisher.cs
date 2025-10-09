@@ -48,6 +48,7 @@ public sealed class RabbitMqEventPublisher : IEventPublisher, IDisposable
             basicProperties: new BasicProperties { Persistent = true },
             body: body
         );
+        Console.WriteLine("Published");
     }
 
     public void Dispose()

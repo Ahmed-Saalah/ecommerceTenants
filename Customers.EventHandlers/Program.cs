@@ -1,4 +1,6 @@
+using Customers.EventHandlers;
 using Customers.EventHandlers.Clients.Customers;
+using Customers.EventHandlers.Handlers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +25,7 @@ await host.RunAsync();
 static void Configure(IServiceCollection services, IConfiguration config)
 {
     services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
+    services.AddSingleton<IEventHandler, UserCreatedEventHandler>();
 
     services.AddHttpClient<ICustomersClient, CustomersClient>(client =>
     {
