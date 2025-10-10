@@ -37,7 +37,7 @@ public static class ServiceConfiguration
 
         svcs.AddTransient<ILogger>(_ => _.GetRequiredService<ILogger<Program>>());
 
-        svcs.AddDataAccess<AuthDbContext>();
+        //svcs.AddDataAccess<AuthDbContext>();
 
         svcs.AddScoped<ITokenGenerator, TokenGenerator>();
 

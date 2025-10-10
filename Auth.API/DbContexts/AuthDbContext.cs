@@ -1,4 +1,5 @@
 ﻿using Auth.API.Models;
+using Auth.API.Models.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -44,31 +45,31 @@ public sealed class AuthDbContext(DbContextOptions<AuthDbContext> options)
             .HasForeignKey(r => r.UserId);
 
         builder
-            .Entity<IdentityRole<int>>()
+            .Entity<Role>()
             .HasData(
-                new IdentityRole<int>
+                new Role
                 {
                     Id = 1,
-                    Name = "admin",
-                    NormalizedName = "ADMIN",
+                    Name = RoleConstants.Tenant,
+                    NormalizedName = RoleConstants.Tenant.ToUpper(),
                 },
-                new IdentityRole<int>
+                new Role
                 {
                     Id = 2,
-                    Name = "owner",
-                    NormalizedName = "OWNER",
+                    Name = RoleConstants.TenantManager,
+                    NormalizedName = RoleConstants.TenantManager.ToUpper(),
                 },
-                new IdentityRole<int>
+                new Role
                 {
                     Id = 3,
-                    Name = "Customer",
-                    NormalizedName = "CUSTOMER",
+                    Name = RoleConstants.Customer,
+                    NormalizedName = RoleConstants.Customer.ToUpper(),
                 },
-                new IdentityRole<int>
+                new Role
                 {
                     Id = 4,
-                    Name = "guest",
-                    NormalizedName = "GUEST",
+                    Name = RoleConstants.Guest,
+                    NormalizedName = RoleConstants.Guest.ToUpper(),
                 }
             );
     }
