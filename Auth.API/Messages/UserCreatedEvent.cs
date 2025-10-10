@@ -1,7 +1,7 @@
 ﻿namespace Auth.API.Messages;
 
 public sealed record UserCreatedEvent(
-    int CustomerId,
+    int UserId,
     int TenantId,
     string Username,
     string? Email,

@@ -17,7 +17,6 @@ public sealed class AuthDbContext(DbContextOptions<AuthDbContext> options)
         IdentityUserToken<int>
     >(options)
 {
-    public DbSet<UserTenant> UserTenants { get; set; }
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -30,7 +29,7 @@ public sealed class AuthDbContext(DbContextOptions<AuthDbContext> options)
             .WithOne(u => u.User)
             .HasForeignKey(u => u.UserId);
 
-        builder.Entity<User>().HasMany(u => u.UserTenants).WithOne().HasForeignKey(u => u.UserId);
+        builder.Entity<User>().HasIndex(u => u.TenantId);
 
         builder
             .Entity<Role>()
@@ -43,8 +42,6 @@ public sealed class AuthDbContext(DbContextOptions<AuthDbContext> options)
             .HasOne(r => r.User)
             .WithMany(u => u.RefreshTokens)
             .HasForeignKey(r => r.UserId);
-
-        builder.Entity<UserTenant>().HasKey(ut => new { ut.UserId, ut.TenantId });
 
         builder
             .Entity<IdentityRole<int>>()
