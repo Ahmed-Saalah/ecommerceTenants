@@ -11,9 +11,4 @@ public class CreateUserResponse : Result<CreateUserResponseDto>
         new() { Error = errorResult };
 }
 
-public sealed record CreateUserResponseDto(
-    int UserId,
-    string AccessToken,
-    string RefreshToken,
-    DateTime ExpiresIn
-);
+public sealed record CreateUserResponseDto(int UserId, string AccessToken, string RefreshToke);

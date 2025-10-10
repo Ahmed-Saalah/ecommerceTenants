@@ -2,7 +2,6 @@
 using Auth.API.Messages;
 using Auth.API.Models;
 using Auth.API.Services;
-using Core.DataAccess.Abstractions;
 using Core.Messaging;
 using FluentValidation;
 using MediatR;
@@ -11,12 +10,12 @@ using Microsoft.AspNetCore.Identity;
 namespace Auth.API.Features.CreateUser;
 
 public sealed class CreateUserHandler(
-    IEntityWriter<UserTenant> userTenantWriter,
     IValidator<CreateUserRequest> validator,
     UserManager<User> userManager,
     RoleManager<Role> roleManager,
-    ITokenGenerator tokenGenerator,
-    IEventPublisher eventPublisher
+    ITokenService tokenService,
+    IEventPublisher eventPublisher,
+    IHttpContextAccessor httpContextAccessor
 ) : IRequestHandler<CreateUserRequest, CreateUserResponse>
 {
     public async Task<CreateUserResponse> Handle(
@@ -46,19 +45,11 @@ public sealed class CreateUserHandler(
 
         var roleExists = await roleManager.RoleExistsAsync(request.Role);
         if (!roleExists)
+        {
             return new NotFound("Specified role does not exist");
+        }
 
         await userManager.AddToRoleAsync(user, request.Role);
-
-        if (request.TenantIds is not null)
-        {
-            foreach (var tenantId in request.TenantIds.Distinct())
-            {
-                await userTenantWriter.AddAsync(
-                    new UserTenant { UserId = user.Id, TenantId = tenantId }
-                );
-            }
-        }
 
         if (request.Claims?.Any() == true)
         {
@@ -68,15 +59,14 @@ public sealed class CreateUserHandler(
             );
         }
 
-        var (accessToken, refreshToken, expiresAt) = tokenGenerator.Generate(
+        var (access, refresh) = await tokenService.GenerateTokensAsync(
             user,
-            request.TenantIds ?? Array.Empty<int>()
+            httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "unknown"
         );
 
         await eventPublisher.PublishAsync(
             new UserCreatedEvent(
                 user.Id,
-                request?.TenantIds[0] ?? 1,
                 user.UserName,
                 user.Email,
                 user.PhoneNumber,
@@ -87,6 +77,6 @@ public sealed class CreateUserHandler(
             cancellationToken
         );
 
-        return new CreateUserResponseDto(user.Id, accessToken, refreshToken, expiresAt);
+        return new CreateUserResponseDto(user.Id, access, refresh);
     }
 }

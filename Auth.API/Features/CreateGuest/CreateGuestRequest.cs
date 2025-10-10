@@ -12,6 +12,5 @@ public sealed record CreateGuestRequest(
     string DisplayName,
     string Role,
     string? AvatarPath,
-    int[]? TenantIds,
     UserClaim[]? Claims
 ) : IRequest<CreateGuestResponse>;

@@ -5,13 +5,12 @@ namespace Auth.API.Features.CreateUser
 {
     public sealed record CreateUserRequest(
         string Username,
-        string? Email,
+        string Email,
         string PhoneNumber,
         string Password,
         string DisplayName,
         string Role,
         string? AvatarPath,
-        int[]? TenantIds,
         UserClaim[]? Claims
     ) : IRequest<CreateUserResponse>;
 }

@@ -39,7 +39,7 @@ public static class ServiceConfiguration
 
         //svcs.AddDataAccess<AuthDbContext>();
 
-        svcs.AddScoped<ITokenGenerator, TokenGenerator>();
+        svcs.AddScoped<ITokenService, TokenService>();
 
         svcs.AddIdentity<User, Role>()
             .AddEntityFrameworkStores<AuthDbContext>()

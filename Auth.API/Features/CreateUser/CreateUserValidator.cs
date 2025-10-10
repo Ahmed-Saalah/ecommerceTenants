@@ -100,10 +100,6 @@ public sealed class CreateUserValidator : AbstractValidator<CreateUserRequest>
                 }
             )
             .WithMessage("Username already exists");
-
-        RuleFor(r => r.TenantIds)
-            .Must(tenantIds => tenantIds == null || tenantIds.All(id => id > 0))
-            .WithMessage("Tenant ID must greater than 0");
     }
 
     private async Task<bool> EmailAndRoleIsValidAsync(

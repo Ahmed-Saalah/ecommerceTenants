@@ -8,8 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Auth.API.Features.Login;
 
-public sealed class LoginHandler(AuthDbContext dbContext, ITokenGenerator tokenGenerator)
-    : IRequestHandler<LoginRequest, Result<Response>>
+public sealed class LoginHandler(
+    AuthDbContext dbContext,
+    ITokenService tokenService,
+    IHttpContextAccessor httpContextAccessor
+) : IRequestHandler<LoginRequest, Result<Response>>
 {
     public async Task<Result<Response>> Handle(
         LoginRequest request,
@@ -38,14 +41,9 @@ public sealed class LoginHandler(AuthDbContext dbContext, ITokenGenerator tokenG
         //if (!passwordValid)
         //    return new ValidationError("Invalid username or password");
 
-        // Collect tenant memberships (you can adjust depending on your model)
-        var tenantIds = user.UserTenants?.Select(t => t.TenantId).ToArray() ?? Array.Empty<int>();
-        int? activeTenantId = tenantIds.FirstOrDefault();
-
-        var (accessToken, refreshToken, expiresIn) = tokenGenerator.Generate(
+        var (access, refresh) = await tokenService.GenerateTokensAsync(
             user,
-            tenantIds,
-            activeTenantId
+            httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "unknown"
         );
 
         // Find role (assuming one role for simplicity)
@@ -58,6 +56,6 @@ public sealed class LoginHandler(AuthDbContext dbContext, ITokenGenerator tokenG
             user.AvatarPath ?? string.Empty
         );
 
-        return new Response(accessToken, refreshToken, expiresIn, role, profile);
+        return new Response(access, refresh, role, profile);
     }
 }

@@ -9,7 +9,8 @@ namespace Auth.API.Features.CreateGuest;
 
 public sealed class CreateGuestHandler(
     UserManager<User> userManager,
-    ITokenGenerator tokenGenerator
+    ITokenService tokenService,
+    IHttpContextAccessor httpContextAccessor
 ) : IRequestHandler<CreateGuestRequest, CreateGuestResponse>
 {
     public async Task<CreateGuestResponse> Handle(
@@ -29,21 +30,18 @@ public sealed class CreateGuestHandler(
 
         var result = await userManager.CreateAsync(user, request.Password);
         if (!result.Succeeded)
+        {
             return new ValidationError(result.Errors);
+        }
 
         await userManager.AddToRoleAsync(user, request.Role);
 
-        // Decide how to handle tenant memberships
-        var tenantIds = request.TenantIds ?? Array.Empty<int>();
-        int? activeTenantId = tenantIds.FirstOrDefault();
-
         // Generate token with tenant info
-        var (accessToken, refreshToken, _) = tokenGenerator.Generate(
+        var (access, refresh) = await tokenService.GenerateTokensAsync(
             user,
-            tenantIds,
-            activeTenantId
+            httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "unknown"
         );
 
-        return new ResponseDto(user.Id, accessToken, refreshToken);
+        return new ResponseDto(user.Id, access, refresh);
     }
 }

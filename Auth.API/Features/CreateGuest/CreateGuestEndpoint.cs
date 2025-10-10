@@ -22,7 +22,6 @@ public sealed class CreateGuestEndpoint : IEndpoint
                             Password: GuestData.Password,
                             DisplayName: GuestData.DisplayName,
                             Role: RoleConstants.Guest,
-                            TenantIds: tenantIds,
                             Claims: [],
                             AvatarPath: null
                         )

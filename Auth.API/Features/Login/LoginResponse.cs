@@ -3,7 +3,6 @@
 public sealed record Response(
     string AccessToken,
     string RefreshToken,
-    DateTime ExpiresIn,
     string Role,
     ProfileData Profile
 );

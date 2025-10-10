@@ -4,12 +4,17 @@ namespace Auth.API.Services;
 
 public interface ITokenService
 {
-    Task<(string, DateTime)> CreateTokenAsync(User user, int[] tenantIds);
-    Task<(string, DateTime)> CreateImpersonationTokenAsync(
-        User impersonator,
-        User impersonatedUser,
-        string sessionId,
-        int[] tenantIds
+    Task<(string AccessToken, string RefreshToken)> GenerateTokensAsync(
+        User user,
+        string ipAddress
     );
-    RefreshToken GenerateRefreshToken();
+    string GenerateAccessToken(User user);
+    string GenerateRefreshTokenString();
+    Task<RefreshToken?> GetRefreshTokenAsync(string token);
+    Task RevokeRefreshTokenAsync(
+        RefreshToken token,
+        string ipAddress,
+        string? replacedByToken = null
+    );
+    Task<(string AccessToken, string RefreshToken)> RefreshAsync(string token, string ipAddress);
 }
