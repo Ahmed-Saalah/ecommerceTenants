@@ -1,5 +1,4 @@
-﻿using Auth.API.Features.CreateUser;
-using Auth.API.Models;
+﻿using Auth.API.Models;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using PhoneNumbers;

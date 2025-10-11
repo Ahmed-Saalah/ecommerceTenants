@@ -1,6 +1,6 @@
 ﻿using Auth.API.Helpers;
 
-namespace Auth.API.Mediator.CreateGuest;
+namespace Auth.API.Features.CreateGuest;
 
 public class CreateGuestResponse : Result<ResponseDto>
 {

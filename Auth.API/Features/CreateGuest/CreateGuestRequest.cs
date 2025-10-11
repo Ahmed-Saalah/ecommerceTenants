@@ -1,5 +1,4 @@
-﻿using Auth.API.Mediator.CreateGuest;
-using Auth.API.Models;
+﻿using Auth.API.Models;
 using MediatR;
 
 namespace Auth.API.Features.CreateGuest;

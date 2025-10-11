@@ -1,5 +1,4 @@
 ﻿using Auth.API.Helpers;
-using Auth.API.Mediator.CreateGuest;
 using Auth.API.Models;
 using Auth.API.Services;
 using MediatR;
@@ -22,7 +21,7 @@ public sealed class CreateGuestHandler(
         {
             UserName = request.Username,
             Email = request.Email,
-            DisplayName = request.DisplayName ?? request.Username,
+            DisplayName = request.DisplayName,
             PhoneNumber = request.PhoneNumber,
             AvatarPath = request.AvatarPath,
             RegisteredAt = DateTime.UtcNow,
@@ -36,7 +35,6 @@ public sealed class CreateGuestHandler(
 
         await userManager.AddToRoleAsync(user, request.Role);
 
-        // Generate token with tenant info
         var (access, refresh) = await tokenService.GenerateTokensAsync(
             user,
             httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "unknown"

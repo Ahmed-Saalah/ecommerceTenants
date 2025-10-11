@@ -11,7 +11,7 @@ public sealed class CreateGuestEndpoint : IEndpoint
     public void Map(IEndpointRouteBuilder app)
     {
         app.MapPost(
-                "/api/users/customers/guest",
+                "/api/users/guest",
                 async (IMediator mediator, [FromQuery] int[]? tenantIds) =>
                 {
                     var response = await mediator.Send(

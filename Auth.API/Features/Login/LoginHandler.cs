@@ -1,6 +1,5 @@
 ﻿using Auth.API.DbContexts;
 using Auth.API.Helpers;
-using Auth.API.Models;
 using Auth.API.Models.Constants;
 using Auth.API.Services;
 using MediatR;
@@ -19,8 +18,7 @@ public sealed class LoginHandler(
         CancellationToken cancellationToken
     )
     {
-        // Lookup user (username or phone login)
-        User? user = request.LoginMethod switch
+        var user = request.LoginMethod switch
         {
             LoginMethods.Phone => await dbContext
                 .Users.Include(u => u.UserRoles)
@@ -34,10 +32,12 @@ public sealed class LoginHandler(
         };
 
         if (user is null)
+        {
             return new NotFound("Invalid username or password");
+        }
 
         // TODO: Password / OTP check
-        //var passwordValid = await userManager.CheckPasswordAsync(user, request.Password);
+        //var passwordValid = await _userManager.CheckPasswordAsync(user, request.Password);
         //if (!passwordValid)
         //    return new ValidationError("Invalid username or password");
 
@@ -47,14 +47,9 @@ public sealed class LoginHandler(
         );
 
         // Find role (assuming one role for simplicity)
-        var role = user.UserRoles?.FirstOrDefault()?.Role?.Name ?? string.Empty;
+        var role = user.UserRoles?.FirstOrDefault()?.Role?.Name;
 
-        var profile = new ProfileData(
-            user.UserName ?? string.Empty,
-            user.Email ?? string.Empty,
-            user.DisplayName ?? string.Empty,
-            user.AvatarPath ?? string.Empty
-        );
+        var profile = new ProfileData(user.UserName, user.Email, user.DisplayName, user.AvatarPath);
 
         return new Response(access, refresh, role, profile);
     }

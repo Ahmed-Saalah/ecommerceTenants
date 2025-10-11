@@ -1,6 +1,7 @@
 ﻿using Auth.API.Helpers;
 using Auth.API.Messages;
 using Auth.API.Models;
+using Auth.API.Models.Constants;
 using Auth.API.Services;
 using Core.Messaging;
 using FluentValidation;
@@ -41,7 +42,9 @@ public sealed class CreateUserHandler(
         var identityResult = await userManager.CreateAsync(user, request.Password);
 
         if (!identityResult.Succeeded)
+        {
             return new ValidationError(identityResult.Errors);
+        }
 
         var roleExists = await roleManager.RoleExistsAsync(request.Role);
         if (!roleExists)
@@ -71,7 +74,7 @@ public sealed class CreateUserHandler(
                 user.Email,
                 user.PhoneNumber,
                 user.DisplayName,
-                request.Claims.Where(c => c.Type == "role").FirstOrDefault().Value
+                request.Role
             ),
             "Auth.UserCreatedEvent",
             cancellationToken
