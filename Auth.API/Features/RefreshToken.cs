@@ -62,14 +62,14 @@ public sealed class RefreshToken
         public void Map(IEndpointRouteBuilder app)
         {
             app.MapPost(
-                    "/api/auth/refresh",
+                    "/api/users/refresh",
                     async ([FromBody] Request request, IMediator mediator) =>
                     {
                         var response = await mediator.Send(request);
                         return response.ToHttpResult();
                     }
                 )
-                .WithTags("Auth");
+                .WithTags("Users");
         }
     }
 }
