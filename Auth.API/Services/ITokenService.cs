@@ -1,4 +1,5 @@
-﻿using Auth.API.Models;
+﻿using System.Security.Claims;
+using Auth.API.Models;
 
 namespace Auth.API.Services;
 
@@ -17,4 +18,8 @@ public interface ITokenService
         string? replacedByToken = null
     );
     Task<(string AccessToken, string RefreshToken)> RefreshAsync(string token, string ipAddress);
+
+    ClaimsPrincipal? GetPrincipalFromExpiredToken(string token);
+
+    Task<bool> ValidateRefreshTokenAsync(User user, string refreshToken);
 }

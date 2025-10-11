@@ -143,4 +143,48 @@ public class TokenService : ITokenService
         var accessToken = GenerateAccessToken(user);
         return (accessToken, newRefreshToken);
     }
+
+    public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
+    {
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false,
+            ValidateIssuer = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(_key),
+            ValidateLifetime = false, // ignore expiration
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        try
+        {
+            var principal = tokenHandler.ValidateToken(
+                token,
+                tokenValidationParameters,
+                out SecurityToken securityToken
+            );
+            if (
+                securityToken is not JwtSecurityToken jwtToken
+                || !jwtToken.Header.Alg.Equals(
+                    SecurityAlgorithms.HmacSha256,
+                    StringComparison.InvariantCultureIgnoreCase
+                )
+            )
+                return null;
+
+            return principal;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public async Task<bool> ValidateRefreshTokenAsync(User user, string refreshToken)
+    {
+        var token = await _db.RefreshTokens.FirstOrDefaultAsync(r =>
+            r.UserId == user.Id && r.Token == refreshToken
+        );
+        return token != null && token.IsActive;
+    }
 }
