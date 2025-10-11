@@ -9,8 +9,9 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
-    <PackageReference Include="MediatR" Version="13.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.12" />
+    <PackageReference Include="libphonenumber-csharp" Version="9.0.8" />
+    <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.17">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -20,11 +21,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.12.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core.DataAccess\Core.DataAccess.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Core.Contexts\Core.Contexts.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Core.Messaging\Core.Messaging.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,4 @@
 ﻿using Auth.API.DbContexts;
-using Auth.API.Extensions;
 using Auth.API.Models;
 using Auth.API.Services;
 using Core.Contexts;

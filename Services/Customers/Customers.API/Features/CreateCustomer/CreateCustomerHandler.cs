@@ -1,7 +1,5 @@
 ﻿using Core.DataAccess.Abstractions;
-using Customers.API.Helpers;
 using Customers.API.Models;
-using FluentValidation;
 using MediatR;
 
 namespace Customers.API.Features.CreateCustomer;
