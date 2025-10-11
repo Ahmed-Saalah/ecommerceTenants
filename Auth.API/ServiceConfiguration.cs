@@ -2,6 +2,7 @@
 using Auth.API.Extensions;
 using Auth.API.Models;
 using Auth.API.Services;
+using Core.Contexts;
 using Core.Messaging;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
@@ -50,6 +51,8 @@ public static class ServiceConfiguration
         var rabbitHost = config.GetValue<string>("RabbitMQ:HostName") ?? "localhost";
         var publisher = await RabbitMqEventPublisher.CreateAsync(rabbitHost);
         svcs.AddSingleton<IEventPublisher>(publisher);
+
+        svcs.AddScoped<IUserContext, UserContext>();
 
         return svcs;
     }
