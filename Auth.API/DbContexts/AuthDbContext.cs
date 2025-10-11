@@ -30,8 +30,6 @@ public sealed class AuthDbContext(DbContextOptions<AuthDbContext> options)
             .WithOne(u => u.User)
             .HasForeignKey(u => u.UserId);
 
-        builder.Entity<User>().HasIndex(u => u.TenantId);
-
         builder
             .Entity<Role>()
             .HasMany(u => u.UserRoles)
