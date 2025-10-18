@@ -3,7 +3,7 @@ using Auth.API.Helpers;
 using Auth.API.Messages;
 using Auth.API.Models;
 using Auth.API.Services;
-using Core.Messaging;
+using Core.Messaging.Abstractions;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

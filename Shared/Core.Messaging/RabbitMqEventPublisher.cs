@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json;
+using Core.Messaging.Abstractions;
 using RabbitMQ.Client;
 
 namespace Core.Messaging;

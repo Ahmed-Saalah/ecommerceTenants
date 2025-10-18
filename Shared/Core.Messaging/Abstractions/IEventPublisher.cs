@@ -1,4 +1,4 @@
-﻿namespace Core.Messaging;
+﻿namespace Core.Messaging.Abstractions;
 
 public interface IEventPublisher
 {
