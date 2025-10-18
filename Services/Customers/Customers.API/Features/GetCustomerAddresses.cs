@@ -41,7 +41,7 @@ public class GetCustomerAddresses
                         return response.ToHttpResult();
                     }
                 )
-                .WithTags("Customer Addresses");
+                .WithTags("Customer Address");
         }
     }
 }

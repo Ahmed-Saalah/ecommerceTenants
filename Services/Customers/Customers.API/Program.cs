@@ -8,11 +8,22 @@ builder.Configuration.AddConfiguration(
 );
 
 IConfiguration config = builder.Configuration;
-builder.Services.AddEndpointsApiExplorer().ConfigureApplicationService(builder.Configuration);
+
+builder
+    .Services.AddEndpointsApiExplorer()
+    .AddSwaggerGen(c =>
+    {
+        c.CustomSchemaIds(opts => opts.FullName?.Replace("+", "."));
+    })
+    .ConfigureApplicationService(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseSwagger().UseSwaggerUI();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseRouting();
 

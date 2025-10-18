@@ -97,7 +97,7 @@ public sealed class UpdateAddress
                         return response.ToHttpResult();
                     }
                 )
-                .WithTags("Customer address");
+                .WithTags("Customer Address");
         }
     }
 }

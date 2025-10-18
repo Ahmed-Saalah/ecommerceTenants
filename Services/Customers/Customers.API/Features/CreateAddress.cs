@@ -85,7 +85,7 @@ public sealed class CreateAddress
                         return response.ToHttpResult();
                     }
                 )
-                .WithTags("Customer address");
+                .WithTags("Customer Address");
         }
     }
 }

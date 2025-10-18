@@ -46,7 +46,7 @@ public sealed class GetAddressById
                         return response.ToHttpResult();
                     }
                 )
-                .WithTags("Addresses");
+                .WithTags("Customer Address");
 
             app.MapGet(
                     "/api/customers/{customerId}/addresses/{addressId}",
@@ -60,7 +60,7 @@ public sealed class GetAddressById
                         return response.ToHttpResult();
                     }
                 )
-                .WithTags("Customer Addresses");
+                .WithTags("Customer Address");
         }
     }
 }

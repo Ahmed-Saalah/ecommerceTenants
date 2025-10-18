@@ -43,7 +43,7 @@ public sealed class DeleteAddress
                         return response.ToHttpResult();
                     }
                 )
-                .WithTags("Addresses");
+                .WithTags("Customer Address");
         }
     }
 }
