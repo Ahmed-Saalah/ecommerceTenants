@@ -16,15 +16,6 @@ public static class DataAccessServiceExtensions
         services.AddScoped<IEntityWriter<Address>, EntityWriter<Address, TDbContext>>();
         services.AddScoped<IEntityReader<Address>, EntityReader<Address, TDbContext>>();
 
-        services.AddScoped<
-            IEntityWriter<CustomerTenant>,
-            EntityWriter<CustomerTenant, TDbContext>
-        >();
-        services.AddScoped<
-            IEntityReader<CustomerTenant>,
-            EntityReader<CustomerTenant, TDbContext>
-        >();
-
         return services;
     }
 }

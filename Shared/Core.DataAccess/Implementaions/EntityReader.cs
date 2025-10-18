@@ -15,6 +15,11 @@ public class EntityReader<T, TDbContext>(TDbContext dbContext) : IEntityReader<T
 
     public async Task<IEnumerable<T>> GetAllAsync() => await _set.AsNoTracking().ToListAsync();
 
+    public async Task<T?> GetOneByAsync(Expression<Func<T, bool>> predicate)
+    {
+        return await _set.AsNoTracking().FirstOrDefaultAsync(predicate);
+    }
+
     public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate) =>
         await _set.Where(predicate).ToListAsync();
 

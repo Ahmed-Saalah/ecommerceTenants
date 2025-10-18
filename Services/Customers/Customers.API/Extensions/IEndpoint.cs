@@ -1,4 +1,4 @@
-﻿namespace Auth.API.Extensions;
+﻿namespace Customers.API.Extensions;
 
 public interface IEndpoint
 {

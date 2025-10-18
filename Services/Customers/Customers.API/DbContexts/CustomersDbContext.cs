@@ -10,7 +10,6 @@ public class CustomersDbContext : DbContext
 
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Address> Addresses { get; set; }
-    public DbSet<CustomerTenant> CustomerTenants { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -34,17 +33,6 @@ public class CustomersDbContext : DbContext
         modelBuilder.Entity<Address>(entity =>
         {
             entity.HasKey(a => a.AddressId);
-        });
-
-        // CustomerTenant config
-        modelBuilder.Entity<CustomerTenant>(entity =>
-        {
-            entity.HasKey(ct => new { ct.CustomerId, ct.TenantId });
-
-            entity
-                .HasOne(ct => ct.Customer)
-                .WithMany(c => c.CustomerTenants)
-                .HasForeignKey(ct => ct.CustomerId);
         });
     }
 }

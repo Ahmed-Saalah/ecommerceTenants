@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Auth.API.Extensions;
 
 namespace Customers.API.Extensions;
 
