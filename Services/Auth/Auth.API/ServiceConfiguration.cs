@@ -48,7 +48,7 @@ public static class ServiceConfiguration
         svcs.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
         var rabbitHost = config.GetValue<string>("RabbitMQ:HostName") ?? "localhost";
-        var publisher = await RabbitMqEventPublisher.CreateAsync(rabbitHost);
+        var publisher = await RabbitMqEventPublisher.CreateAsync(exchangeName: "auth_exchange");
         svcs.AddSingleton<IEventPublisher>(publisher);
 
         svcs.AddScoped<IUserContext, UserContext>();
