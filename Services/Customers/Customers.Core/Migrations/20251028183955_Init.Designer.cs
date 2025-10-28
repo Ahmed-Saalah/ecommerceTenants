@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Customers.Core.Migrations
 {
     [DbContext(typeof(CustomersDbContext))]
-    [Migration("20251025135605_init")]
-    partial class init
+    [Migration("20251028183955_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,7 +67,10 @@ namespace Customers.Core.Migrations
             modelBuilder.Entity("Customers.Core.Models.Customer", b =>
                 {
                     b.Property<int>("CustomerId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
 
                     b.Property<int?>("AddressId")
                         .HasColumnType("int");
@@ -86,11 +89,17 @@ namespace Customers.Core.Migrations
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CustomerId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Customers");
                 });

@@ -1,7 +1,6 @@
-﻿using Core.DataAccess.Abstractions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Core.DataAccess.Implementaions;
+namespace Core.DataAccess;
 
 public class EntityWriter<T, TDbContext>(TDbContext dbContext) : IEntityWriter<T>
     where T : class

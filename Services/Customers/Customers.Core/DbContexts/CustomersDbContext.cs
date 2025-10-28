@@ -22,8 +22,6 @@ public class CustomersDbContext : DbContext
 
             entity.HasIndex(c => c.UserId).IsUnique();
 
-            entity.Property(c => c.CustomerId).ValueGeneratedNever();
-
             entity
                 .HasMany(c => c.Addresses)
                 .WithOne(a => a.Customer)

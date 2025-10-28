@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\Core.DataAccess\Core.DataAccess.csproj" />
     <ProjectReference Include="..\..\..\Shared\Shared.Web\Shared.Web.csproj" />
     <ProjectReference Include="..\Customers.Core\Customers.Core.csproj" />
   </ItemGroup>

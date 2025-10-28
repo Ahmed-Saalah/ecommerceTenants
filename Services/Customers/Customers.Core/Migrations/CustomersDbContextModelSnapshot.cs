@@ -64,7 +64,10 @@ namespace Customers.Core.Migrations
             modelBuilder.Entity("Customers.Core.Models.Customer", b =>
                 {
                     b.Property<int>("CustomerId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
 
                     b.Property<int?>("AddressId")
                         .HasColumnType("int");

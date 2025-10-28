@@ -1,4 +1,4 @@
-﻿using Core.DataAccess.Abstractions;
+﻿using Core.DataAccess;
 using Customers.Core.Models;
 using FluentValidation;
 using MediatR;

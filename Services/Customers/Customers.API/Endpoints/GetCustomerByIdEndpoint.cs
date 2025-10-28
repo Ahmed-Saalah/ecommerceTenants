@@ -14,7 +14,7 @@ public sealed class GetCustomerByIdEndpoint
         {
             app.MapGet(
                     "/api/customers/{customerId:int}",
-                    async (IMediator mediator, [FromRoute] int customerId) =>
+                    async ([FromServices] IMediator mediator, [FromRoute] int customerId) =>
                     {
                         var response = await mediator.Send(new GetCustomerById.Request(customerId));
                         return response.ToHttpResult();

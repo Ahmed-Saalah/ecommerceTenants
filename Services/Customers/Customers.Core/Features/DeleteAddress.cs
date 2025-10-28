@@ -1,4 +1,4 @@
-﻿using Core.DataAccess.Abstractions;
+﻿using Core.DataAccess;
 using Customers.Core.Models;
 using MediatR;
 using Shared.Web.Helpers;

@@ -14,7 +14,7 @@ public sealed class DeleteAddressEndpoint
         {
             app.MapDelete(
                     "/api/addresses/{addressId}",
-                    async ([FromRoute] int addressId, IMediator mediator) =>
+                    async ([FromRoute] int addressId, [FromServices] IMediator mediator) =>
                     {
                         var response = await mediator.Send(new DeleteAddress.Request(addressId));
                         return response.ToHttpResult();

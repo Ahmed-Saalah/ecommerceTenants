@@ -14,7 +14,7 @@ public sealed class GetCustomerByUsernameEndpoint
         {
             app.MapGet(
                     "/api/customers/{username}",
-                    async (IMediator mediator, [FromRoute] string username) =>
+                    async ([FromServices] IMediator mediator, [FromRoute] string username) =>
                     {
                         var response = await mediator.Send(
                             new GetCustomerByUsername.Request(username)

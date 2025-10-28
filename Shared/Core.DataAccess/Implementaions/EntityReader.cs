@@ -1,9 +1,8 @@
 ﻿using System.Linq.Expressions;
-using Core.DataAccess.Abstractions;
 using Core.DataAccess.Helpers;
 using Microsoft.EntityFrameworkCore;
 
-namespace Core.DataAccess.Implementaions;
+namespace Core.DataAccess;
 
 public class EntityReader<T, TDbContext>(TDbContext dbContext) : IEntityReader<T>
     where T : class

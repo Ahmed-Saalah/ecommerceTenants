@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Core.DataAccess.Helpers;
 
-namespace Core.DataAccess.Abstractions;
+namespace Core.DataAccess;
 
 public interface IEntityReader<T>
 {

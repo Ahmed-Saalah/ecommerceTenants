@@ -14,7 +14,10 @@ public sealed class CreateCustomerEndpoint
         {
             app.MapPost(
                     "/api/customers",
-                    async (IMediator mediator, [FromBody] CreateCustomer.Request data) =>
+                    async (
+                        [FromServices] IMediator mediator,
+                        [FromBody] CreateCustomer.Request data
+                    ) =>
                     {
                         var response = await mediator.Send(data);
                         return response.ToHttpResult();

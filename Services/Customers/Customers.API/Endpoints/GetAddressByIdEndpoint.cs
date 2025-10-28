@@ -14,7 +14,7 @@ public sealed class GetAddressByIdEndpoint
         {
             app.MapGet(
                     "/api/addresses/{addressId}",
-                    async ([FromRoute] int addressId, IMediator mediator) =>
+                    async ([FromRoute] int addressId, [FromServices] IMediator mediator) =>
                     {
                         var response = await mediator.Send(
                             new GetAddressById.Request(addressId, null)

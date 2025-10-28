@@ -15,7 +15,7 @@ public sealed class CreateAddressEndpoint
             app.MapPost(
                     "/api/customers/{customerId}/address",
                     async (
-                        IMediator mediator,
+                        [FromServices] IMediator mediator,
                         [FromRoute] int customerId,
                         [FromBody] CreateAddress.RequestDto data
                     ) =>

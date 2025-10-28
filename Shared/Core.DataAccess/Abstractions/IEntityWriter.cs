@@ -1,4 +1,4 @@
-﻿namespace Core.DataAccess.Abstractions;
+﻿namespace Core.DataAccess;
 
 public interface IEntityWriter<T>
     where T : class

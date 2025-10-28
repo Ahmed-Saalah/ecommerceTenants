@@ -15,7 +15,7 @@ public sealed class UpdateAddressEndpoint
             app.MapPut(
                     "/api/customers/{customerId}/address/{addressId}",
                     async (
-                        IMediator mediator,
+                        [FromServices] IMediator mediator,
                         [FromRoute] int customerId,
                         [FromRoute] int addressId,
                         [FromBody] UpdateAddress.RequestDto data

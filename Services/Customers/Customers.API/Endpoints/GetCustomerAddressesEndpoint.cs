@@ -14,7 +14,7 @@ public class GetCustomerAddressesEndpoint
         {
             app.MapGet(
                     "/api/customers/{customerId}/addresses",
-                    async ([FromRoute] int customerId, IMediator mediator) =>
+                    async ([FromRoute] int customerId, [FromServices] IMediator mediator) =>
                     {
                         var response = await mediator.Send(
                             new GetCustomerAddresses.Request(customerId)
