@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Endpoints\GetCustomerByIdEndpoint.cs~RFaa44d.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="13.0.0" />
@@ -25,6 +29,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\Core.DataAccess\Core.DataAccess.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Shared.Web\Shared.Web.csproj" />
+    <ProjectReference Include="..\Customers.Core\Customers.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

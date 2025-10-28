@@ -1,8 +1,9 @@
 using Core.Messaging.Abstractions;
+using MediatR;
 
 namespace Customers.EventHandler;
 
-public class UserCreatedHandler(ILogger<UserCreatedHandler> logger)
+public class UserCreatedHandler(ILogger<UserCreatedHandler> logger, IMediator _mediator)
     : IEventHandler<UserCreatedEvent>
 {
     private readonly ILogger<UserCreatedHandler> _logger = logger;

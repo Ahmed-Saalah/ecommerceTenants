@@ -1,7 +1,9 @@
-﻿using Customers.API.DbContexts;
-using Customers.API.Extensions;
+﻿using Customers.Core.DbContexts;
+using Customers.Core.Extensions;
+using Customers.Core.Features;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Customers.API;
 
@@ -20,7 +22,9 @@ public static class ServiceConfiguration
             config.GetValue<string>("SBConnection")
             ?? throw new Exception("SBConnection configuration not found");
 
-        svcs.AddMediatR(_ => _.RegisterServicesFromAssemblyContaining<Program>());
+        svcs.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssembly(typeof(CreateCustomer.Handler).Assembly)
+        );
 
         svcs.AddDbContext<CustomersDbContext>(options =>
         {
@@ -31,11 +35,9 @@ public static class ServiceConfiguration
 
         svcs.AddLogging(_ => _.AddConsole().AddDebug());
 
-        svcs.AddTransient<ILogger>(_ => _.GetRequiredService<ILogger<Program>>());
-
         svcs.AddDataAccess<CustomersDbContext>();
 
-        svcs.AddValidatorsFromAssembly(typeof(Program).Assembly);
+        svcs.AddValidatorsFromAssembly(typeof(CreateAddress.Validator).Assembly);
 
         return svcs;
     }
