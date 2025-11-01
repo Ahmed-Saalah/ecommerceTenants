@@ -29,10 +29,18 @@ public class EntityReader<T, TDbContext>(TDbContext dbContext) : IEntityReader<T
         return await _set.CountAsync(predicate);
     }
 
+    public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
+    {
+        return await _set.AnyAsync(predicate);
+    }
+
     public async Task<PagedResult<T>> GetPagedAsync(int pageNumber, int pageSize)
     {
         var totalCount = await _set.CountAsync();
-        var items = await _set.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        var items = await _set.AsNoTracking()
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
 
         return new PagedResult<T>
         {

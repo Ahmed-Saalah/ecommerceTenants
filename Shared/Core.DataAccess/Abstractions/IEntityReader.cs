@@ -11,5 +11,6 @@ public interface IEntityReader<T>
     Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
     Task<int> CountAsync();
     Task<int> CountAsync(Expression<Func<T, bool>> predicate);
+    Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate);
     Task<PagedResult<T>> GetPagedAsync(int pageNumber, int pageSize);
 }
