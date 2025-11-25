@@ -12,10 +12,6 @@
 	 <PackageReference Include="MediatR" Version="13.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Endpoints\" />
-  </ItemGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Shared\Shared.Web\Shared.Web.csproj" />
 		<ProjectReference Include="..\Store.Core.csproj" />
