@@ -11,4 +11,6 @@ public sealed class Store
     public string OwnerPhoneNumber { get; set; }
     public string ContactUsEmail { get; set; }
     public DateTime Timestamp { get; set; }
+
+    public ICollection<Document> Documents { get; set; } = new List<Document>();
 }
